@@ -5,8 +5,12 @@ import com.crud.app.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 @Service
@@ -15,6 +19,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserServiceImpl implements UserServices {
     private UserRepository userRepository;
+    HashMap<String, Object> dates;
     @Override
     public String saveUser(UserLogin user) {
         userRepository.save(user);
@@ -27,8 +32,16 @@ public class UserServiceImpl implements UserServices {
     }
 
     @Override
-    public Optional<UserLogin> updateUser(UserLogin user) {
-        return Optional.empty();
+    public Optional<UserLogin> updateUser(@RequestBody UserLogin user) {
+        Optional<UserLogin> exist = userRepository.findById(user.getId());
+        dates = new HashMap<>();
+        if (user.getId() != null && exist.isPresent()) {
+            userRepository.save(user);
+            dates.put("UPDATE", "Updated data");
+            return Optional.of(userRepository.save(user));
+        }
+        dates.put("ERROR", "Could not update data");
+        return Optional.of(userRepository.save(user));
     }
 
     @Override

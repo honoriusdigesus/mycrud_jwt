@@ -27,4 +27,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userLogin);
     }
 
+    @PutMapping
+    public ResponseEntity<Optional<UserLogin>> updateUserById(@RequestBody UserLogin userLogin){
+        Optional<UserLogin> updateUser = userServices.updateUser(userLogin);
+        return ResponseEntity.status(HttpStatus.OK).body(updateUser);
+    }
+
 }
