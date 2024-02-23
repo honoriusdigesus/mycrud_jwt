@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @Getter
 @Setter
@@ -16,21 +18,21 @@ public class UserServiceImpl implements UserServices {
     @Override
     public String saveUser(UserLogin user) {
         userRepository.save(user);
-        return "Usuario almacenado correctamente";
+        return "Usuario almacenado correctamente con el ID: " + user.getId();
     }
 
     @Override
-    public UserLogin findUserById(Integer id) {
-        return null;
+    public Optional<UserLogin> findUserById(Integer id) {
+        return userRepository.findById(id);
     }
 
     @Override
-    public UserLogin updateUser(UserLogin user) {
-        return null;
+    public Optional<UserLogin> updateUser(UserLogin user) {
+        return Optional.empty();
     }
 
     @Override
-    public UserLogin deleteUser(Integer id) {
+    public String deleteUser(Integer id) {
         return null;
     }
 }
